@@ -11,3 +11,7 @@ padding-right: 25px;
 display: flex;
 justify-content: center;
 }
+
+div {
+    padding-right: 25px;
+}
