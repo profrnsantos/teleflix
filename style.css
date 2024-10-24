@@ -6,6 +6,7 @@ section {
 background: gray;
 padding-bottom: 80px;
 padding-top: 80px;
+padding-left: 25px;
 display: flex;
 justify-content: center;
 }
