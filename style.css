@@ -18,5 +18,7 @@ div {
 
 .chamada-texto{
     padding-right: 5%;
-    background-color: darkblue;
+    padding-left: 5%;
+    background-color: black;
+
 }
