@@ -17,5 +17,6 @@ div {
 }
 
 .chamada-texto{
-    text-align: center;
+    padding-right: 5%;
+    background-color: darkblue;
 }
