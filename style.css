@@ -24,6 +24,6 @@ div {
 }
 
 .categoria_videos{
-    
+    display: flex;
     
 }
