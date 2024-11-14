@@ -26,5 +26,9 @@ div {
 .categoria_videos{
     display: flex;
     overflow-x: auto;
+    width:320px; 
+    height:auto; 
+    border-radius:8px; 
+    margin:10px;
     
 }
