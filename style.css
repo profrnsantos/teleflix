@@ -2,7 +2,7 @@ body {
     color: white;
     background-color: black;
 }
-section {
+.chamada {
 background: gray;
 padding-bottom: 80px;
 padding-top: 80px;
@@ -16,6 +16,9 @@ div {
     padding-right: 25px;
 }
 
+.categoria{
+
+}
 .chamada-texto{
     padding-right: 5%;
     padding-left: 5%;
