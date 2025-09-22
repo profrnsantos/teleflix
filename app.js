@@ -122,7 +122,7 @@ function renderList() {
 
     const playBtn = document.createElement('button');
     playBtn.className = 'btn flat';
-    playBtn.textContent = '▶️ Tocar';
+    playBtn.textContent = '▶️';
     playBtn.addEventListener('click', () => playVideo(v));
 
     const delBtn = document.createElement('button');
