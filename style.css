@@ -1,3 +1,24 @@
+/* Campos de pesquisa e formulário com cantos quadrados */
+select,
+input[type="text"],
+input[type="url"],
+textarea {
+  width: 100%;
+  background: #0e1420;
+  color: var(--ink);
+  border: 1px solid #213048;
+  border-radius: 0;          /* <-- cantos quadrados */
+  padding: 12px 14px;
+  outline: none;
+}
+
+select:focus,
+input:focus,
+textarea:focus {
+  border-color: #2e4a80;
+  box-shadow: 0 0 0 3px #2e4a8026;
+}
+
 :root{
 --bg:#0f141a; --panel:#131a22; --ink:#e6edf3; --muted:#9aa7b2; --brand:#4f46e5; --brand-2:#22c55e; --danger:#ef4444;
 --card:#111821; --stroke:#223043; --shadow: 0 10px 30px rgba(0,0,0,.35);
@@ -68,3 +89,4 @@ select:focus, input:focus, textarea:focus{border-color:#2e4a80;box-shadow:0 0 0 
 
 .hint{color:var(--muted);font-size:12px}
 .divider{height:1px;background:#1f2a37;margin:8px 0}
+
