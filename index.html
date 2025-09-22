@@ -1,46 +1,82 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <title>TeleFlix</title>
-</head>
-<body>
-    <header><h1>TeleFlix</h1></header>
-    </header>
-    <hr>
-   <section class="chamada">
-    <div class="chamada-texto">
-<h1>Te Vivo Y Te Respiro (Acústico) - Lilly Goodman</h1>
-<p>Louvor em espanhol</p>
+<span style="margin-left:auto" class="hint">Dica: adicione vídeos pelo formulário na lateral</span>
 </div>
-<div>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/P_7scd8n76Y?si=9jVaVRPT4AY4OGOH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</header>
+
+
+<div class="layout">
+<!-- SIDEBAR -->
+<aside class="sidebar" aria-label="Biblioteca e formulário de inclusão">
+<!-- Filtro / Tema / Busca -->
+<section>
+<h2>Escolha o tema</h2>
+<div class="grid-2">
+<select id="temaSelect" aria-label="Tema">
+<option value="LOUVOR">LOUVOR</option>
+<option value="MENSAGENS">MENSAGENS</option>
+<option value="INFANTIL">INFANTIL</option>
+<option value="AULAS">AULAS</option>
+</select>
+<div class="search">
+<input id="q" type="text" placeholder="Buscar por título/autor…" aria-label="Buscar" />
+<button class="btn ghost" id="clearSearch" title="Limpar busca">Limpar</button>
+</div>
 </div>
 </section>
-<section class="categoria">
-    <h2 class="chamada-texto2">Lista de Louvores em Espanhol</h2>
-    <div class="categoria_videos">
-        <a href="https://m.youtube.com/watch?v=T5gGDtW9l2Y&pp=ygUXbG91dm9yIGVzcGFuaG9sIG1hcmNlbGE%3D" target="_blank">
-            <img src="https://img.youtube.com/vi/T5gGDtW9l2Y/hqdefault.jpg" alt="Miniatura do vídeo - Louvor Espanhol Marcela Gandara">
-        
-        
-        <a href="https://m.youtube.com/watch?v=AB2x_DII3W0&pp=ygUSc3VwZSBxdWUgbWUgYW1hYmFz" target="_blank">
-            <img src="https://img.youtube.com/vi/AB2x_DII3W0/hqdefault.jpg" alt="Miniatura do vídeo - Supe que me amabas">
-        
-        
-        <a href="https://m.youtube.com/watch?v=3ei_pVycn4U&pp=ygUbbGFyZ28gdmlhamUgbWFyY2VsYSBnYW5kYXJh" target="_blank">
-            <img src="https://img.youtube.com/vi/3ei_pVycn4U/hqdefault.jpg" alt="Miniatura do vídeo - Largo Viaje Marcela Gandara">
-        </a>.
-    </div>
+
+
+<!-- Lista de vídeos -->
+<section>
+<h2>Vídeos do tema</h2>
+<ul id="lista" class="list" aria-live="polite"></ul>
 </section>
-<hr>
-    <footer>
+
+
+<!-- Formulário de inclusão -->
+<section>
+<h2>Adicionar novo vídeo</h2>
+<div class="stack">
+<input id="fTitulo" type="text" placeholder="Título do vídeo" />
+<input id="fAutor" type="text" placeholder="Autor / Canal" />
+<input id="fUrl" type="url" placeholder="URL do YouTube (ex.: https://youtu.be/ID ou ?v=ID)" />
+<div class="grid-2">
+<select id="fTema">
+<option value="LOUVOR">LOUVOR</option>
+<option value="MENSAGENS">MENSAGENS</option>
+<option value="INFANTIL">INFANTIL</option>
+<option value="AULAS">AULAS</option>
+</select>
+<button class="btn flat2" id="btnAdd">➕ Adicionar</button>
+</div>
+<div class="hint">Os itens ficam salvos no seu navegador (localStorage). Você pode removê‑los pela lista.</div>
+</div>
+</section>
+</aside>
+
+
+<!-- PLAYER -->
+<main class="player" aria-label="Player de vídeo">
+<div class="video-box">
+<iframe class="video-frame" src="https://www.youtube.com/embed/kNJPalON82E" title="Player de vídeo" allowfullscreen></iframe>
+</div>
+<div class="info">
+<div class="now">
+<h3 id="nowTitle">EU SOU TEU PAI</h3>
+<p id="nowAuthor">VALESCA MAYSSA</p>
+</div>
+<div class="actions">
+<a id="openYT" class="btn" href="https://www.youtube.com/watch?v=kNJPalON82E" target="_blank" rel="noopener">Abrir no YouTube</a>
+<button id="shuffleBtn" class="btn ghost" title="Tocar aleatório deste tema">Shuffle</button>
+</div>
+</div>
+</main>
+</div>
+
+
+<script src="app.js"></script>
+<footer>
         <p>Copyright Ⓒ 2024 Professor Roberto Nunes dos Santos - Licença MIT. Você é livre para usar, copiar, modificar e distribuir o conteúdo, desde que mantenha os avisos de copyright e de licença original citando a fonte. O conteúdo é oferecido "como está", sem qualquer garantia, explícita ou implícita.</p>
     </footer>
 </body>
 </html>
+  
