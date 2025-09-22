@@ -174,3 +174,24 @@ textarea:focus{
   word-break: break-word;
   overflow-wrap: anywhere;
 }
+
+/* Layout em grid com áreas nomeadas */
+.layout{
+  max-width:1200px; margin:18px auto;
+  display:grid;
+  grid-template-columns:320px 1fr;
+  grid-template-areas: "sidebar player";   /* desktop: sidebar à esquerda, player à direita */
+  gap:20px; padding:0 16px;
+}
+.sidebar{ grid-area: sidebar; }
+.player{  grid-area: player;  }
+
+/* Em telas pequenas (celular), o PLAYER vem primeiro e a sidebar fica abaixo */
+@media (max-width: 980px){
+  .layout{
+    grid-template-columns:1fr;
+    grid-template-areas:
+      "player"
+      "sidebar";                 /* ordem invertida no mobile */
+  }
+}
