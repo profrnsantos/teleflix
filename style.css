@@ -1,9 +1,11 @@
 :root{
   --bg:#0f141a; --panel:#131a22; --ink:#e6edf3; --muted:#9aa7b2;
-  --brand:#4f46e5; --brand-2:#1f2a24;           /* verde escuro quase cinza */
-  --brand-2-border:#3a4a41; --danger:#ef4444;
+  --brand:#4f46e5;
+  --brand-2:#1f2a24;            /* verde escuro quase cinza (Adicionar) */
+  --brand-2-border:#3a4a41;
+  --danger:#ef4444;
   --card:#111821; --stroke:#223043; --shadow:0 10px 30px rgba(0,0,0,.35);
-  --radius:0; --radius-sm:0; --gap:16px; --pad:16px;
+  --radius:0; --gap:16px; --pad:16px;
 }
 
 *{box-sizing:border-box}
@@ -56,7 +58,7 @@ header{
   font-weight:700; letter-spacing:.06em;
 }
 
-/* Campos QUADRADOS (pesquisa + formulário) */
+/* Campos (pesquisa + formulário) quadrados */
 select,
 input[type="text"],
 input[type="url"],
@@ -65,17 +67,16 @@ textarea{
   background:#0e1420;
   color:var(--ink);
   border:1px solid #213048;
-  border-radius:0;                 /* cantos quadrados */
+  border-radius:0;
   padding:12px 14px;
   outline:none;
 }
-
 /* Focus bem fininho */
 select:focus,
 input:focus,
 textarea:focus{
   border-color:#2e4a80;
-  box-shadow:0 0 0 1px #2e4a80;    /* antes 3px; agora fino */
+  box-shadow:0 0 0 1px #2e4a80;
 }
 
 /* Botões (todos quadrados) */
@@ -85,28 +86,12 @@ textarea:focus{
   border:1px solid #334155;
   background:#111827;
   color:#e5e7eb;
-  border-radius:0;                 /* cantos quadrados */
+  border-radius:0;
   cursor:pointer; text-decoration:none; font-weight:700;
 }
 .btn:active{ transform:translateY(1px) }
-
-/* Play: PRETO com contorno cinza e só ícone */
-.btn.play{
-  background:#0b0b0b;             /* preto */
-  border:1px solid #4b5563;        /* cinza do contorno */
-  color:#e5e7eb;
-}
-.btn.play:hover{ filter:brightness(1.1) }
-
-/* Adicionar: “verde escuro quase cinza” */
-.btn.flat2{
-  background:var(--brand-2);
-  border:1px solid var(--brand-2-border);
-  color:#e5e7eb;
-}
-
-/* Outros estados opcionais (mantidos) */
 .btn.flat{ background:var(--brand); border-color:transparent }
+.btn.flat2{ background:var(--brand-2); border:1px solid var(--brand-2-border); color:#e5e7eb } /* Adicionar */
 .btn.ghost{ background:transparent; border-color:#23324a; color:#c9d4df }
 .btn.danger{ background:var(--danger); border-color:transparent }
 
@@ -117,10 +102,14 @@ textarea:focus{
   padding:10px; border:1px solid #1e2a3f;
   background:var(--card); border-radius:0;
 }
-.item .meta{ flex:1; min-width:0 }
+.item:hover{ background:#0e1621 }                 /* realce leve */
+.item .meta{
+  flex:1; min-width:0;
+  cursor:pointer;                                   /* cartão clicável */
+}
 .item .title{ font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
 .item .author{ color:var(--muted); font-size:12px; margin-top:2px }
-.item .actions{ display:flex; gap:8px }
+.item .actions{ display:flex; gap:8px; margin-left:8px }  /* lixeira à direita */
 
 /* Tags & busca */
 .tag{
