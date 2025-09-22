@@ -149,3 +149,28 @@ textarea:focus{
 
 .hint{ color:var(--muted); font-size:12px }
 .divider{ height:1px; background:#1f2a37; margin:8px 0 }
+
+/* Títulos da lista (cartões) — quebram linha */
+.item .title{
+  font-weight:800;
+  /* antes tinha white-space: nowrap; remova e use: */
+  white-space: normal;          /* permite múltiplas linhas */
+  line-height: 1.2;
+  word-break: break-word;       /* quebra palavras longas */
+  overflow-wrap: anywhere;      /* força quebra em strings sem espaço */
+}
+
+/* Título exibido ao lado do player */
+.now{
+  min-width: 0;                 /* importante p/ flexbox não estourar */
+  max-width: 100%;
+}
+.now h3{
+  margin:0;
+  font-size:20px;
+  letter-spacing:.2px;
+  white-space: normal;          /* permite múltiplas linhas */
+  line-height: 1.2;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
