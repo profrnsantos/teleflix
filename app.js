@@ -1,6 +1,9 @@
 // app.js — TELEFLIX (player + biblioteca local por tema)
+// Versão: cartões do vídeo são clicáveis (sem botão de play)
 
-// ======= Dados iniciais (seed) =======
+//////////////////////////////
+// 1) Dados iniciais (SEED) //
+//////////////////////////////
 const SEED = {
   LOUVOR: [
     { titulo: "EU SOU TEU PAI", autor: "VALESCA MAYSSA", url: "https://www.youtube.com/watch?v=kNJPalON82E" },
@@ -21,122 +24,155 @@ const SEED = {
   ]
 };
 
-// ======= Seletores =======
-const LS_KEY   = 'teleflixLibrary:v1';
-const listEl   = document.getElementById('lista');
-const temaSel  = document.getElementById('temaSelect');
-const q        = document.getElementById('q');
-const clearBtn = document.getElementById('clearSearch');
-const addBtn   = document.getElementById('btnAdd');
-const fTitulo  = document.getElementById('fTitulo');
-const fAutor   = document.getElementById('fAutor');
-const fUrl     = document.getElementById('fUrl');
-const fTema    = document.getElementById('fTema');
+//////////////////////////
+// 2) Seletores globais //
+//////////////////////////
+const LS_KEY    = "teleflixLibrary:v1";
 
-const iframeEl = document.querySelector('.video-frame');
-const nowTitle = document.getElementById('nowTitle');
-const nowAuthor= document.getElementById('nowAuthor');
-const openYT   = document.getElementById('openYT');
-const shuffle  = document.getElementById('shuffleBtn');
-const countChip= document.getElementById('countChip');
+const listEl    = document.getElementById("lista");
+const temaSel   = document.getElementById("temaSelect");
+const q         = document.getElementById("q");
+const clearBtn  = document.getElementById("clearSearch");
 
-// ======= Persistência =======
+const addBtn    = document.getElementById("btnAdd");
+const fTitulo   = document.getElementById("fTitulo");
+const fAutor    = document.getElementById("fAutor");
+const fUrl      = document.getElementById("fUrl");
+const fTema     = document.getElementById("fTema");
+
+const iframeEl  = document.querySelector(".video-frame");
+const nowTitle  = document.getElementById("nowTitle");
+const nowAuthor = document.getElementById("nowAuthor");
+const openYT    = document.getElementById("openYT");
+const shuffle   = document.getElementById("shuffleBtn");
+const countChip = document.getElementById("countChip");
+
+//////////////////////////////////
+// 3) Persistência (localStorage)
+//////////////////////////////////
+function deepClone(obj){ return JSON.parse(JSON.stringify(obj)); }
+
 function loadLibrary() {
   try {
     const raw = localStorage.getItem(LS_KEY);
     if (!raw) {
-      saveLibrary(SEED);
-      return structuredClone(SEED);
+      const seed = deepClone(SEED);
+      saveLibrary(seed);
+      return seed;
     }
     const parsed = JSON.parse(raw);
-    // Se por algum motivo estiver vazio/estranho, regrava seed
-    if (!parsed || typeof parsed !== 'object') {
-      saveLibrary(SEED);
-      return structuredClone(SEED);
+    if (!parsed || typeof parsed !== "object") {
+      const seed = deepClone(SEED);
+      saveLibrary(seed);
+      return seed;
     }
-    // Garante que todos os temas existam
+    // garante chaves dos temas
     for (const k of Object.keys(SEED)) {
       if (!Array.isArray(parsed[k])) parsed[k] = [];
     }
     return parsed;
   } catch {
-    saveLibrary(SEED);
-    return structuredClone(SEED);
+    const seed = deepClone(SEED);
+    saveLibrary(seed);
+    return seed;
   }
 }
+
 function saveLibrary(lib) {
   localStorage.setItem(LS_KEY, JSON.stringify(lib));
   updateCount(lib);
 }
+
 function updateCount(lib) {
-  const total = Object.values(lib).reduce((s, arr) => s + arr.length, 0);
-  countChip.textContent = `${total} vídeo${total !== 1 ? 's' : ''}`;
+  const total = Object.values(lib).reduce((acc, arr) => acc + arr.length, 0);
+  if (countChip) countChip.textContent = `${total} vídeo${total !== 1 ? "s" : ""}`;
 }
 
 let LIB = loadLibrary();
 updateCount(LIB);
 
-// ======= Util =======
+/////////////////////////////
+// 4) Util: montar embed YT
+/////////////////////////////
 function toEmbed(url) {
   try {
     const u = new URL(url);
-    if (u.hostname.includes('youtu.be')) {
-      const id = u.pathname.slice(1);
-      return { embed: `https://www.youtube.com/embed/${id}`, watch: `https://www.youtube.com/watch?v=${id}` };
+    // youtu.be/VIDEOID?...  (curto)
+    if (u.hostname.includes("youtu.be")) {
+      const id = u.pathname.replace("/", "").trim();
+      if (id) {
+        return {
+          embed: `https://www.youtube.com/embed/${id}`,
+          watch: `https://www.youtube.com/watch?v=${id}`
+        };
+      }
     }
-    const id = u.searchParams.get('v');
+    // youtube.com/watch?v=VIDEOID
+    const id = u.searchParams.get("v");
     if (id) {
-      return { embed: `https://www.youtube.com/embed/${id}`, watch: `https://www.youtube.com/watch?v=${id}` };
+      return {
+        embed: `https://www.youtube.com/embed/${id}`,
+        watch: `https://www.youtube.com/watch?v=${id}`
+      };
     }
   } catch {}
+  // fallback: devolve a URL original
   return { embed: url, watch: url };
 }
 
-// ======= Render =======
+/////////////////////
+// 5) Renderização //
+/////////////////////
 function renderList() {
   const tema = temaSel.value;
-  const term = q.value.trim().toLowerCase();
+  const term = (q.value || "").trim().toLowerCase();
   const items = (LIB[tema] || []).filter(v =>
     !term ||
     v.titulo.toLowerCase().includes(term) ||
     v.autor.toLowerCase().includes(term)
   );
 
-  listEl.innerHTML = '';
+  listEl.innerHTML = "";
   items.forEach((v, idx) => {
-    const li = document.createElement('li');
-    li.className = 'item';
+    const li = document.createElement("li");
+    li.className = "item";
 
-    const meta = document.createElement('div');
-    meta.className = 'meta';
-    const tt = document.createElement('div');
-    tt.className = 'title';
+    // Área clicável (cartão do vídeo)
+    const meta = document.createElement("div");
+    meta.className = "meta";
+    const tt = document.createElement("div");
+    tt.className = "title";
     tt.textContent = v.titulo.toUpperCase();
-    const au = document.createElement('div');
-    au.className = 'author';
+    const au = document.createElement("div");
+    au.className = "author";
     au.textContent = v.autor.toUpperCase();
     meta.append(tt, au);
 
-    const actions = document.createElement('div');
-    actions.className = 'actions';
+    // Clique no cartão toca o vídeo
+    meta.addEventListener("click", () => playVideo(v));
 
-    const playBtn = document.createElement('button');
-    playBtn.className = 'btn flat';
-    playBtn.textContent = '▶️';
-    playBtn.addEventListener('click', () => playVideo(v));
+    // Ações (apenas excluir)
+    const actions = document.createElement("div");
+    actions.className = "actions";
 
-    const delBtn = document.createElement('button');
-    delBtn.className = 'btn danger';
-    delBtn.textContent = '🗑️';
-    delBtn.title = 'Remover';
-    delBtn.addEventListener('click', () => removeItem(tema, idx));
+    const delBtn = document.createElement("button");
+    delBtn.className = "btn danger";
+    delBtn.textContent = "🗑️";
+    delBtn.title = "Remover";
+    delBtn.addEventListener("click", (ev) => {
+      ev.stopPropagation(); // não aciona o clique do cartão
+      removeItem(tema, idx);
+    });
 
-    actions.append(playBtn, delBtn);
+    actions.append(delBtn);
     li.append(meta, actions);
     listEl.appendChild(li);
   });
 }
 
+////////////////////
+// 6) Player logic //
+////////////////////
 function playVideo(v) {
   const { embed, watch } = toEmbed(v.url);
   iframeEl.src = embed;
@@ -145,27 +181,37 @@ function playVideo(v) {
   openYT.href = watch;
 }
 
+function shufflePlay() {
+  const arr = LIB[temaSel.value] || [];
+  if (!arr.length) return;
+  const i = Math.floor(Math.random() * arr.length);
+  playVideo(arr[i]);
+}
+
+///////////////////////////
+// 7) CRUD na biblioteca //
+///////////////////////////
 function removeItem(tema, idx) {
-  if (!confirm('Remover este vídeo do tema?')) return;
+  if (!confirm("Remover este vídeo do tema?")) return;
   LIB[tema].splice(idx, 1);
   saveLibrary(LIB);
   renderList();
 }
 
 function addItem() {
-  const titulo = (fTitulo.value || '').trim();
-  const autor  = (fAutor.value  || '').trim();
-  const url    = (fUrl.value    || '').trim();
+  const titulo = (fTitulo.value || "").trim();
+  const autor  = (fAutor.value  || "").trim();
+  const url    = (fUrl.value    || "").trim();
   const tema   = fTema.value;
 
   if (!titulo || !autor || !url) {
-    alert('Preencha Título, Autor e URL.');
+    alert("Preencha Título, Autor e URL.");
     return;
   }
 
   const parsed = toEmbed(url);
   if (!/^https:\/\/www\.youtube\.com\/embed\//.test(parsed.embed)) {
-    alert('Informe uma URL válida do YouTube (youtu.be/ID ou youtube.com/watch?v=ID).');
+    alert("Informe uma URL válida do YouTube (youtu.be/ID ou youtube.com/watch?v=ID).");
     return;
   }
 
@@ -173,32 +219,27 @@ function addItem() {
   LIB[tema].unshift({ titulo, autor, url });
   saveLibrary(LIB);
 
-  fTitulo.value = '';
-  fAutor.value  = '';
-  fUrl.value    = '';
+  fTitulo.value = "";
+  fAutor.value  = "";
+  fUrl.value    = "";
   fTema.value   = tema;
 
-  // Atualiza a lista do tema atual
-  if (temaSel.value !== tema) {
-    temaSel.value = tema;
-  }
+  if (temaSel.value !== tema) temaSel.value = tema;
   renderList();
 }
 
-// ======= Eventos =======
-addBtn.addEventListener('click', addItem);
-q.addEventListener('input', renderList);
-clearBtn.addEventListener('click', () => { q.value = ''; renderList(); });
-temaSel.addEventListener('change', renderList);
-shuffle.addEventListener('click', () => {
-  const arr = LIB[temaSel.value] || [];
-  if (!arr.length) return;
-  const i = Math.floor(Math.random() * arr.length);
-  playVideo(arr[i]);
-});
+/////////////////
+// 8) Eventos  //
+/////////////////
+if (addBtn)   addBtn.addEventListener("click", addItem);
+if (q)        q.addEventListener("input", renderList);
+if (clearBtn) clearBtn.addEventListener("click", () => { q.value = ""; renderList(); });
+if (temaSel)  temaSel.addEventListener("change", renderList);
+if (shuffle)  shuffle.addEventListener("click", shufflePlay);
 
-// ======= Inicialização =======
+/////////////////////////
+// 9) Inicialização    //
+/////////////////////////
 renderList();
-// Toca o primeiro do tema atual (se houver)
 const first = (LIB[temaSel.value] || [])[0];
 if (first) playVideo(first);
